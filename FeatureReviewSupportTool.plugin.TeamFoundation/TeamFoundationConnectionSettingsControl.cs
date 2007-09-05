@@ -80,11 +80,6 @@ namespace FeatureReviewSupportTool
             }
         }
 
-        private void openWorkItem_CheckedChanged( object sender, EventArgs e )
-        {
-            warningProvider.SetError( openWorkItem, GetOpenWorkItemMessage() );
-        }
-
         private string GetOpenWorkItemMessage()
         {
             if( !OpenWorkItem )

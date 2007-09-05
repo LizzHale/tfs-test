@@ -14,5 +14,8 @@
     <Setting Name="AutomaticallyOpenWorkItem" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
+    <Setting Name="WorkItemUrlFormatString" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://teamplain/wi.aspx?id={0}</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

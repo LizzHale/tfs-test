@@ -8,6 +8,7 @@ using Microsoft.TeamFoundation;
 using Microsoft.TeamFoundation.Client;
 using Microsoft.TeamFoundation.VersionControl.Client;
 using Microsoft.TeamFoundation.WorkItemTracking.Client;
+using FeatureReviewSupportTool.plugin.TeamFoundation.Properties;
 
 namespace FeatureReviewSupportTool.TeamFoundation
 {
@@ -152,13 +153,15 @@ namespace FeatureReviewSupportTool.TeamFoundation
 
         private void OpenWorkItem( WorkItem workItem )
         {
+            string workItemUrl = "";
             try
             {
-                Process.Start( "http://teamplain/UI/Pages/Workitems/WorkItemEdit.aspx?id=" + workItem.Id );
+                workItemUrl = string.Format( Settings.Default.WorkItemUrlFormatString, workItem.Id );
+                Process.Start( workItemUrl );
             }
             catch( Exception e )
             {
-                Debug.WriteLine( "Failed to open work item " + workItem.Id + " in teamplain: " + e.Message );
+                Debug.WriteLine( "Failed to open work item " + workItem.Id + " (" + workItemUrl + ") in teamplain: " + e.Message );
             }
         }
 

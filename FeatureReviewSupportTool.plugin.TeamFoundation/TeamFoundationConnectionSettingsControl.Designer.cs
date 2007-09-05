@@ -29,7 +29,6 @@ namespace FeatureReviewSupportTool
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager( typeof( TeamFoundationConnectionSettingsControl ) );
             this.tfServerLabel = new System.Windows.Forms.Label();
             this.tfServer = new System.Windows.Forms.TextBox();
             this.followReviewLinks = new System.Windows.Forms.CheckBox();
@@ -37,8 +36,6 @@ namespace FeatureReviewSupportTool
             this.openCril = new System.Windows.Forms.CheckBox();
             this.openWorkItem = new System.Windows.Forms.CheckBox();
             this.pickServerButton = new System.Windows.Forms.Button();
-            this.warningProvider = new System.Windows.Forms.ErrorProvider( this.components );
-            ((System.ComponentModel.ISupportInitialize) (this.warningProvider)).BeginInit();
             this.SuspendLayout();
             // 
             // tfServerLabel
@@ -94,7 +91,6 @@ namespace FeatureReviewSupportTool
             this.openWorkItem.Text = "Open Work Item";
             this.toolTip1.SetToolTip( this.openWorkItem, "Open the work item in a web browser" );
             this.openWorkItem.UseVisualStyleBackColor = true;
-            this.openWorkItem.CheckedChanged += new System.EventHandler( this.openWorkItem_CheckedChanged );
             // 
             // pickServerButton
             // 
@@ -105,11 +101,6 @@ namespace FeatureReviewSupportTool
             this.pickServerButton.Text = "Choose...";
             this.pickServerButton.UseVisualStyleBackColor = true;
             this.pickServerButton.Click += new System.EventHandler( this.pickServerButton_Click );
-            // 
-            // warningProvider
-            // 
-            this.warningProvider.ContainerControl = this;
-            this.warningProvider.Icon = ((System.Drawing.Icon) (resources.GetObject( "warningProvider.Icon" )));
             // 
             // TeamFoundationConnectionSettingsControl
             // 
@@ -123,7 +114,6 @@ namespace FeatureReviewSupportTool
             this.Controls.Add( this.tfServerLabel );
             this.Name = "TeamFoundationConnectionSettingsControl";
             this.Size = new System.Drawing.Size( 459, 58 );
-            ((System.ComponentModel.ISupportInitialize) (this.warningProvider)).EndInit();
             this.ResumeLayout( false );
             this.PerformLayout();
 
@@ -138,6 +128,5 @@ namespace FeatureReviewSupportTool
         private System.Windows.Forms.CheckBox openCril;
         private System.Windows.Forms.Button pickServerButton;
         private System.Windows.Forms.CheckBox openWorkItem;
-        private System.Windows.Forms.ErrorProvider warningProvider;
     }
 }
