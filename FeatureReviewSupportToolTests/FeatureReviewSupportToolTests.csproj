@@ -30,6 +30,7 @@
     <DefineConstants>TRACE</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.TeamFoundation.VersionControl.Client, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=x86" />
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\..\WINDOWS\assembly\GAC_MSIL\Microsoft.VisualStudio.QualityTools.UnitTestFramework\8.0.0.0__b03f5f7f11d50a3a\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll</HintPath>
@@ -37,6 +38,7 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="TeamFoundation\ParsedQueryTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="HistoryQueryHelperTests.cs" />
   </ItemGroup>
@@ -44,6 +46,10 @@
     <ProjectReference Include="..\FeatureReviewSupportTool.Core\FeatureReviewSupportTool.Core.csproj">
       <Project>{9D7E8ECF-E62C-4451-9F4F-9CC41718A668}</Project>
       <Name>FeatureReviewSupportTool.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FeatureReviewSupportTool.plugin.TeamFoundation\FeatureReviewSupportTool.plugin.TeamFoundation.csproj">
+      <Project>{602424C6-B37D-41AE-B8D6-CE712E7553FB}</Project>
+      <Name>FeatureReviewSupportTool.plugin.TeamFoundation</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSHARP.Targets" />

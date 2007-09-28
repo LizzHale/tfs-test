@@ -30,7 +30,9 @@ namespace FeatureReviewSupportTool.TeamFoundation
 
         public ChangeHistoryDataSet GetVersions( string query, bool followReviewLinks, bool openCril, bool openWorkItem )
         {
-            return CreateHistoryDataSet( GetChangesets( GetDevelopmentTasks( query, followReviewLinks, openCril, openWorkItem ) ) );
+            ParsedQuery parsedQuery = ParsedQuery.Parse( query );
+            OpenExternalInformation( parsedQuery.WorkItemIds, openWorkItem, openCril );
+            return CreateHistoryDataSet( GetChangesets( parsedQuery, followReviewLinks ) );
         }
 
         private ChangeHistoryDataSet CreateHistoryDataSet( List<Changeset> changesets )
@@ -77,6 +79,14 @@ namespace FeatureReviewSupportTool.TeamFoundation
             return string.Join( ",", workItemIds.ToArray() );
         }
 
+        private List<Changeset> GetChangesets( ParsedQuery query, bool followReviewLinks )
+        {
+            List<Changeset> changesets = new List<Changeset>();
+            changesets.AddRange( GetChangesets( GetDevelopmentTasks( query.WorkItemIds, followReviewLinks ) ) );
+            if( query.HasVersions ) changesets.AddRange( GetChangesets( query.ServerPath, query.StartVersion, query.EndVersion ) );
+            return changesets;
+        }
+
         private List<Changeset> GetChangesets( List<WorkItem> workItems )
         {
             List<Changeset> changesets = new List<Changeset>();
@@ -85,6 +95,46 @@ namespace FeatureReviewSupportTool.TeamFoundation
                 changesets.Add( clientHelper.VersionControl.GetChangeset( changesetId ) );
             }
             return changesets;
+        }
+
+        private List<Changeset> GetChangesets( string path, VersionSpec startVersionSpec, VersionSpec endVersionSpec )
+        {
+            VersionSpec refinedStartVersion = Refine( path, startVersionSpec, true );
+            VersionSpec refinedEndVersion = Refine( path, endVersionSpec, false );
+            List<Changeset> changesets = new List<Changeset>();
+            foreach( Changeset changeset in clientHelper.VersionControl.QueryHistory( path, VersionSpec.Latest, 0, RecursionType.Full, null, refinedStartVersion, refinedEndVersion, Int32.MaxValue, true, false ) )
+            {
+                changesets.Add( changeset );
+            }
+            return changesets;
+        }
+
+        private VersionSpec Refine( string path, VersionSpec startVersionSpec, bool isStart )
+        {
+            if( startVersionSpec is LabelVersionSpec )
+            {
+                int changesetId = GetMostRecentChangesetId( path, (LabelVersionSpec) startVersionSpec );
+                return MakeChangesetSpec( changesetId, isStart );
+            }
+                return startVersionSpec;
+        }
+
+        private VersionSpec MakeChangesetSpec( int changesetId, bool isStart )
+        {
+            return new ChangesetVersionSpec( changesetId + (isStart ? 1 : 0) );
+        }
+
+        private int GetMostRecentChangesetId( string path, LabelVersionSpec labelVersionSpec )
+        {
+            int mostRecentChangesetId = 0;
+            foreach( VersionControlLabel label in clientHelper.VersionControl.QueryLabels( labelVersionSpec.Label, path, null, true ) )
+            {
+                foreach( Item item in label.Items )
+                {
+                    mostRecentChangesetId = Math.Max( item.ChangesetId, mostRecentChangesetId );
+                }
+            }
+            return mostRecentChangesetId;
         }
 
         private IEnumerable<int> GetChangesetIds( List<WorkItem> workItems )
@@ -113,13 +163,15 @@ namespace FeatureReviewSupportTool.TeamFoundation
             }
         }
 
-        private List<WorkItem> GetDevelopmentTasks( string query, bool followReviewLinks, bool openCril, bool openWorkItem )
+        private void OpenExternalInformation( IList<int> workItemIds, bool openWorkItem, bool openCril )
         {
-            List<WorkItem> workItems = new List<WorkItem>();
-            foreach( string workItemId in query.Split( ',' ) )
+            foreach( int workItemId in workItemIds )
             {
-                WorkItem workItem = clientHelper.WorkItemStore.GetWorkItem( Convert.ToInt32( workItemId.Trim() ) );
-                workItems.Add( workItem );
+                WorkItem workItem = clientHelper.WorkItemStore.GetWorkItem( workItemId );
+                if( openWorkItem )
+                {
+                    OpenWorkItem( workItem );
+                }
                 if( openCril )
                 {
                     if( workItem.Type.Name == ReviewWorkItemType )
@@ -127,10 +179,16 @@ namespace FeatureReviewSupportTool.TeamFoundation
                         OpenIssueLogs( workItem );
                     }
                 }
-                if( openWorkItem )
-                {
-                    OpenWorkItem( workItem );
-                }
+            }
+        }
+
+        private List<WorkItem> GetDevelopmentTasks( IList<int> workItemIds, bool followReviewLinks )
+        {
+            List<WorkItem> workItems = new List<WorkItem>();
+            foreach( int workItemId in workItemIds )
+            {
+                WorkItem workItem = clientHelper.WorkItemStore.GetWorkItem( workItemId );
+                workItems.Add( workItem );
                 if( followReviewLinks )
                 {
                     if( workItem.Type.Name == ReviewWorkItemType )
