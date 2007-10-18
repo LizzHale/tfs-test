@@ -1,95 +1,49 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 9.00
-# Visual Studio 2005
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FeatureReviewSupportTool", "FeatureReviewSupportTool\FeatureReviewSupportTool.csproj", "{F706E907-AA2A-401C-8EDF-E146771E4FC3}"
-	ProjectSection(WebsiteProperties) = preProject
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.Debug = "False"
-	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FeatureReviewSupportTool.Core", "FeatureReviewSupportTool.Core\FeatureReviewSupportTool.Core.csproj", "{9D7E8ECF-E62C-4451-9F4F-9CC41718A668}"
-	ProjectSection(WebsiteProperties) = preProject
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.Debug = "False"
-	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FeatureReviewSupportTool.plugin.Vault", "FeatureReviewSupportTool.plugin.Vault\FeatureReviewSupportTool.plugin.Vault.csproj", "{1B638DF9-4904-4753-AD44-537CBAE7EF0B}"
-	ProjectSection(WebsiteProperties) = preProject
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.Debug = "False"
-	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FeatureReviewSupportTool.plugin.ClearCase", "FeatureReviewSupportTool.plugin.ClearCase\FeatureReviewSupportTool.plugin.ClearCase.csproj", "{3C7E62F7-7573-4963-A2DB-2AF683C04FFA}"
-	ProjectSection(WebsiteProperties) = preProject
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.Debug = "False"
-	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FeatureReviewSupportTool.plugin.TeamFoundation", "FeatureReviewSupportTool.plugin.TeamFoundation\FeatureReviewSupportTool.plugin.TeamFoundation.csproj", "{602424C6-B37D-41AE-B8D6-CE712E7553FB}"
-	ProjectSection(WebsiteProperties) = preProject
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.Debug = "False"
-	EndProjectSection
-EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Installer", "Installer\Installer.vdproj", "{3EAD6259-2D2E-49A1-931F-D5AEC138ACFD}"
-	ProjectSection(WebsiteProperties) = preProject
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.Debug = "False"
-	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ICSharpCode.SharpZLib", "External\ICSharpCode.SharpZipLib\ICSharpCode.SharpZLib.csproj", "{18D20629-913A-4474-B2D1-643290E14ED7}"
-	ProjectSection(WebsiteProperties) = preProject
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.Debug = "False"
-	EndProjectSection
-EndProject
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E912E00E-2EED-4893-9E80-86F57D00EA87}"
-	ProjectSection(WebsiteProperties) = preProject
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.Debug = "False"
-	EndProjectSection
 	ProjectSection(SolutionItems) = preProject
 		CRST.vsmdi = CRST.vsmdi
 		localtestrun.testrunconfig = localtestrun.testrunconfig
 		ReleaseProcess.txt = ReleaseProcess.txt
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FeatureReviewSupportTool", "FeatureReviewSupportTool\FeatureReviewSupportTool.csproj", "{F706E907-AA2A-401C-8EDF-E146771E4FC3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FeatureReviewSupportTool.Core", "FeatureReviewSupportTool.Core\FeatureReviewSupportTool.Core.csproj", "{9D7E8ECF-E62C-4451-9F4F-9CC41718A668}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FeatureReviewSupportTool.plugin.TeamFoundation", "FeatureReviewSupportTool.plugin.TeamFoundation\FeatureReviewSupportTool.plugin.TeamFoundation.csproj", "{602424C6-B37D-41AE-B8D6-CE712E7553FB}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Installer", "Installer\Installer.vdproj", "{3EAD6259-2D2E-49A1-931F-D5AEC138ACFD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ICSharpCode.SharpZLib", "External\ICSharpCode.SharpZipLib\ICSharpCode.SharpZLib.csproj", "{18D20629-913A-4474-B2D1-643290E14ED7}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FeatureReviewSupportToolTests", "FeatureReviewSupportToolTests\FeatureReviewSupportToolTests.csproj", "{E6F4FCE0-CA0E-41F7-B8DF-47E39F0D46D8}"
-	ProjectSection(WebsiteProperties) = preProject
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.Debug = "False"
-	EndProjectSection
 EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 9
+		SccNumberOfProjects = 7
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://tfs04.codeplex.com/
-		SccProjectUniqueName0 = Installer\\Installer.vdproj
-		SccProjectName0 = Installer
-		SccLocalPath0 = Installer
-		SccLocalPath1 = .
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = Installer\\Installer.vdproj
+		SccProjectName1 = Installer
+		SccLocalPath1 = Installer
 		SccProjectUniqueName2 = FeatureReviewSupportTool\\FeatureReviewSupportTool.csproj
 		SccProjectName2 = FeatureReviewSupportTool
 		SccLocalPath2 = FeatureReviewSupportTool
 		SccProjectUniqueName3 = FeatureReviewSupportTool.Core\\FeatureReviewSupportTool.Core.csproj
 		SccProjectName3 = FeatureReviewSupportTool.Core
 		SccLocalPath3 = FeatureReviewSupportTool.Core
-		SccProjectUniqueName4 = FeatureReviewSupportTool.plugin.Vault\\FeatureReviewSupportTool.plugin.Vault.csproj
-		SccProjectName4 = FeatureReviewSupportTool.plugin.Vault
-		SccLocalPath4 = FeatureReviewSupportTool.plugin.Vault
-		SccProjectUniqueName5 = FeatureReviewSupportTool.plugin.ClearCase\\FeatureReviewSupportTool.plugin.ClearCase.csproj
-		SccProjectName5 = FeatureReviewSupportTool.plugin.ClearCase
-		SccLocalPath5 = FeatureReviewSupportTool.plugin.ClearCase
-		SccProjectUniqueName6 = FeatureReviewSupportTool.plugin.TeamFoundation\\FeatureReviewSupportTool.plugin.TeamFoundation.csproj
-		SccProjectName6 = FeatureReviewSupportTool.plugin.TeamFoundation
-		SccLocalPath6 = FeatureReviewSupportTool.plugin.TeamFoundation
-		SccProjectUniqueName7 = External\\ICSharpCode.SharpZipLib\\ICSharpCode.SharpZLib.csproj
-		SccProjectName7 = External/ICSharpCode.SharpZipLib
-		SccLocalPath7 = External\\ICSharpCode.SharpZipLib
-		SccProjectUniqueName8 = FeatureReviewSupportToolTests\\FeatureReviewSupportToolTests.csproj
-		SccProjectName8 = FeatureReviewSupportToolTests
-		SccLocalPath8 = FeatureReviewSupportToolTests
+		SccProjectUniqueName4 = FeatureReviewSupportTool.plugin.TeamFoundation\\FeatureReviewSupportTool.plugin.TeamFoundation.csproj
+		SccProjectName4 = FeatureReviewSupportTool.plugin.TeamFoundation
+		SccLocalPath4 = FeatureReviewSupportTool.plugin.TeamFoundation
+		SccProjectUniqueName5 = External\\ICSharpCode.SharpZipLib\\ICSharpCode.SharpZLib.csproj
+		SccProjectName5 = External/ICSharpCode.SharpZipLib
+		SccLocalPath5 = External\\ICSharpCode.SharpZipLib
+		SccProjectUniqueName6 = FeatureReviewSupportToolTests\\FeatureReviewSupportToolTests.csproj
+		SccProjectName6 = FeatureReviewSupportToolTests
+		SccLocalPath6 = FeatureReviewSupportToolTests
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -104,13 +58,6 @@ Global
 		{9D7E8ECF-E62C-4451-9F4F-9CC41718A668}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9D7E8ECF-E62C-4451-9F4F-9CC41718A668}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9D7E8ECF-E62C-4451-9F4F-9CC41718A668}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1B638DF9-4904-4753-AD44-537CBAE7EF0B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1B638DF9-4904-4753-AD44-537CBAE7EF0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1B638DF9-4904-4753-AD44-537CBAE7EF0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1B638DF9-4904-4753-AD44-537CBAE7EF0B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3C7E62F7-7573-4963-A2DB-2AF683C04FFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3C7E62F7-7573-4963-A2DB-2AF683C04FFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3C7E62F7-7573-4963-A2DB-2AF683C04FFA}.Release|Any CPU.Build.0 = Release|Any CPU
 		{602424C6-B37D-41AE-B8D6-CE712E7553FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{602424C6-B37D-41AE-B8D6-CE712E7553FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{602424C6-B37D-41AE-B8D6-CE712E7553FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
