@@ -1,0 +1,6 @@
+HIGH  Make it not crash if you hit Copy for Excel before loading a feature.
+      
+MED   Create an installer and put it on \\net.sep.com\files (also create a version-incrementing plan)
+
+LOW   Get last modified version of a file to the current working folder.
+LOW   If a branch name is typed into the lookup field, perform updates to that branch as directed by the user.
