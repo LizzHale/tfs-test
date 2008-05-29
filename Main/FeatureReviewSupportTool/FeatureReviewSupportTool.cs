@@ -1,6 +1,7 @@
 using System;
 using System.Drawing;
 using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration;
 using System.Windows.Forms;
@@ -8,8 +9,6 @@ using System.Data;
 using System.Text;
 using System.IO;
 using System.Security.Cryptography;
-
-using Janus.Windows.GridEX;
 
 using Sep.ConfigurationManagement.Vault.CodeReview;
 using Sep.Windows.Forms;
@@ -113,7 +112,7 @@ namespace FeatureReviewSupportTool
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Button diffButton;
         private System.Windows.Forms.ErrorProvider errorProvider1;
-        private Janus.Windows.GridEX.GridEX versionGrid;
+        private DataGridView versionGrid;
         private System.Windows.Forms.CheckBox comments;
         private System.Windows.Forms.CheckBox showFullRepositoryPath;
         private System.ComponentModel.IContainer components;
@@ -136,11 +135,18 @@ namespace FeatureReviewSupportTool
 
         #region Properties
 
-        private GridEXRow CurrentRow
+        private DataRow CurrentRow
         {
             get
             {
-                return versionGrid.GetRow( );
+                if (versionGrid.SelectedRows.Count > 0 && currentDataSet.Count > versionGrid.SelectedRows[0].Index)
+                {
+                    return currentDataSet[versionGrid.SelectedRows[0].Index].Row;
+                }
+                else
+                {
+                    return null;
+                }
             }
         }
 
@@ -264,7 +270,6 @@ namespace FeatureReviewSupportTool
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            Janus.Windows.GridEX.GridEXLayout gridEXLayout1 = new Janus.Windows.GridEX.GridEXLayout();
             this.getFeatureHistoryEditBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.getFeatureHistoryButton = new System.Windows.Forms.Button();
@@ -272,8 +277,8 @@ namespace FeatureReviewSupportTool
             this.copyForExcelButton = new System.Windows.Forms.Button();
             this.diffButton = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.errorProvider1 = new System.Windows.Forms.ErrorProvider( this.components );
-            this.versionGrid = new Janus.Windows.GridEX.GridEX();
+            this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
+            this.versionGrid = new System.Windows.Forms.DataGridView();
             this.gridContextMenu = new System.Windows.Forms.ContextMenu();
             this.diffContextMenuItem = new System.Windows.Forms.MenuItem();
             this.viewContextMenuItem = new System.Windows.Forms.MenuItem();
@@ -281,7 +286,7 @@ namespace FeatureReviewSupportTool
             this.unmarkContextMenuItem = new System.Windows.Forms.MenuItem();
             this.comments = new System.Windows.Forms.CheckBox();
             this.showFullRepositoryPath = new System.Windows.Forms.CheckBox();
-            this.toolTip1 = new System.Windows.Forms.ToolTip( this.components );
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.viewButton = new System.Windows.Forms.Button();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.label6 = new System.Windows.Forms.Label();
@@ -290,76 +295,76 @@ namespace FeatureReviewSupportTool
             this.makeArchiveButton = new System.Windows.Forms.Button();
             this.setToolsButton = new System.Windows.Forms.Button();
             this.makeArchiveFileDialog = new System.Windows.Forms.SaveFileDialog();
-            ((System.ComponentModel.ISupportInitialize) (this.errorProvider1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize) (this.versionGrid)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.versionGrid)).BeginInit();
             this.SuspendLayout();
             // 
             // getFeatureHistoryEditBox
             // 
-            this.getFeatureHistoryEditBox.Anchor = ((System.Windows.Forms.AnchorStyles) (((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.getFeatureHistoryEditBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.getFeatureHistoryEditBox.Location = new System.Drawing.Point( 8, 164 );
+            this.getFeatureHistoryEditBox.Location = new System.Drawing.Point(8, 164);
             this.getFeatureHistoryEditBox.Name = "getFeatureHistoryEditBox";
-            this.getFeatureHistoryEditBox.Size = new System.Drawing.Size( 419, 20 );
+            this.getFeatureHistoryEditBox.Size = new System.Drawing.Size(419, 20);
             this.getFeatureHistoryEditBox.TabIndex = 11;
-            this.getFeatureHistoryEditBox.Enter += new System.EventHandler( this.getFeatureHistoryEditBox_Enter );
-            this.getFeatureHistoryEditBox.Leave += new System.EventHandler( this.DoNotUseGoForAcceptButton );
+            this.getFeatureHistoryEditBox.Leave += new System.EventHandler(this.DoNotUseGoForAcceptButton);
+            this.getFeatureHistoryEditBox.Enter += new System.EventHandler(this.getFeatureHistoryEditBox_Enter);
             // 
             // label1
             // 
-            this.label1.Location = new System.Drawing.Point( 8, 140 );
+            this.label1.Location = new System.Drawing.Point(8, 140);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size( 256, 16 );
+            this.label1.Size = new System.Drawing.Size(256, 16);
             this.label1.TabIndex = 10;
             this.label1.Text = "&Feature #\'s (split with commas), or feature branch";
             // 
             // getFeatureHistoryButton
             // 
-            this.getFeatureHistoryButton.Anchor = ((System.Windows.Forms.AnchorStyles) ((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.getFeatureHistoryButton.Location = new System.Drawing.Point( 435, 164 );
+            this.getFeatureHistoryButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.getFeatureHistoryButton.Location = new System.Drawing.Point(435, 164);
             this.getFeatureHistoryButton.Name = "getFeatureHistoryButton";
-            this.getFeatureHistoryButton.Size = new System.Drawing.Size( 40, 24 );
+            this.getFeatureHistoryButton.Size = new System.Drawing.Size(40, 24);
             this.getFeatureHistoryButton.TabIndex = 12;
             this.getFeatureHistoryButton.Text = "&Go!";
-            this.getFeatureHistoryButton.Click += new System.EventHandler( this.getFeatureHistoryButton_Click );
+            this.getFeatureHistoryButton.Click += new System.EventHandler(this.getFeatureHistoryButton_Click);
             // 
             // showBlame
             // 
-            this.showBlame.Anchor = ((System.Windows.Forms.AnchorStyles) ((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.showBlame.Location = new System.Drawing.Point( 507, 286 );
+            this.showBlame.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.showBlame.Location = new System.Drawing.Point(507, 286);
             this.showBlame.Name = "showBlame";
-            this.showBlame.Size = new System.Drawing.Size( 96, 32 );
+            this.showBlame.Size = new System.Drawing.Size(96, 32);
             this.showBlame.TabIndex = 17;
             this.showBlame.Text = "&Blame";
-            this.showBlame.Click += new System.EventHandler( this.showBlame_Click );
+            this.showBlame.Click += new System.EventHandler(this.showBlame_Click);
             // 
             // copyForExcelButton
             // 
-            this.copyForExcelButton.Anchor = ((System.Windows.Forms.AnchorStyles) ((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.copyForExcelButton.Location = new System.Drawing.Point( 507, 234 );
+            this.copyForExcelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.copyForExcelButton.Location = new System.Drawing.Point(507, 234);
             this.copyForExcelButton.Name = "copyForExcelButton";
-            this.copyForExcelButton.Size = new System.Drawing.Size( 96, 32 );
+            this.copyForExcelButton.Size = new System.Drawing.Size(96, 32);
             this.copyForExcelButton.TabIndex = 16;
             this.copyForExcelButton.Text = "&Copy for Excel";
-            this.copyForExcelButton.Click += new System.EventHandler( this.copyForExcelButton_Click );
+            this.copyForExcelButton.Click += new System.EventHandler(this.copyForExcelButton_Click);
             // 
             // diffButton
             // 
-            this.diffButton.Anchor = ((System.Windows.Forms.AnchorStyles) ((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.diffButton.Location = new System.Drawing.Point( 507, 324 );
+            this.diffButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.diffButton.Location = new System.Drawing.Point(507, 324);
             this.diffButton.Name = "diffButton";
-            this.diffButton.Size = new System.Drawing.Size( 96, 32 );
+            this.diffButton.Size = new System.Drawing.Size(96, 32);
             this.diffButton.TabIndex = 18;
             this.diffButton.Text = "&Diff";
-            this.diffButton.Click += new System.EventHandler( this.diffButton_Click );
+            this.diffButton.Click += new System.EventHandler(this.diffButton_Click);
             // 
             // groupBox1
             // 
-            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles) (((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox1.Location = new System.Drawing.Point( 8, 34 );
+            this.groupBox1.Location = new System.Drawing.Point(8, 34);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size( 595, 88 );
+            this.groupBox1.Size = new System.Drawing.Size(595, 88);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "C&onnection Settings";
@@ -370,37 +375,36 @@ namespace FeatureReviewSupportTool
             // 
             // versionGrid
             // 
-            this.versionGrid.Anchor = ((System.Windows.Forms.AnchorStyles) ((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            this.versionGrid.AllowUserToAddRows = false;
+            this.versionGrid.AllowUserToDeleteRows = false;
+            this.versionGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
                         | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
+            this.versionGrid.BackgroundColor = System.Drawing.SystemColors.Window;
             this.versionGrid.ContextMenu = this.gridContextMenu;
-            gridEXLayout1.LayoutString = "<GridEXLayoutData><FormatStyles Collection=\"true\"><Style0 ID=\"Highlighted\"><BackC" +
-                "olor>255, 255, 192</BackColor><Key>Highlighted</Key></Style0></FormatStyles></Gr" +
-                "idEXLayoutData>";
-            this.versionGrid.DesignTimeLayout = gridEXLayout1;
-            this.versionGrid.EditorsControlStyle.ButtonAppearance = Janus.Windows.GridEX.ButtonAppearance.Regular;
-            this.versionGrid.Font = new System.Drawing.Font( "Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte) (0)) );
-            this.versionGrid.GroupByBoxVisible = false;
-            this.versionGrid.HideSelection = Janus.Windows.GridEX.HideSelection.HighlightInactive;
-            this.versionGrid.Location = new System.Drawing.Point( 8, 196 );
+            this.versionGrid.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnF2;
+            this.versionGrid.Location = new System.Drawing.Point(8, 196);
+            this.versionGrid.MultiSelect = false;
             this.versionGrid.Name = "versionGrid";
-            this.versionGrid.Size = new System.Drawing.Size( 485, 356 );
+            this.versionGrid.RowHeadersVisible = false;
+            this.versionGrid.RowTemplate.ReadOnly = true;
+            this.versionGrid.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.versionGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.versionGrid.Size = new System.Drawing.Size(485, 356);
             this.versionGrid.TabIndex = 15;
-            this.versionGrid.TabKeyBehavior = Janus.Windows.GridEX.TabKeyBehavior.ControlNavigation;
-            this.versionGrid.TotalRow = Janus.Windows.GridEX.InheritableBoolean.True;
-            this.versionGrid.ColumnHeaderClick += new Janus.Windows.GridEX.ColumnActionEventHandler( this.versionGrid_ColumnHeaderClick );
-            this.versionGrid.FormattingRow += new Janus.Windows.GridEX.RowLoadEventHandler( this.versionGrid_FormattingRow );
-            this.versionGrid.KeyDown += new System.Windows.Forms.KeyEventHandler( this.versionGrid_KeyDown );
-            this.versionGrid.CellValueChanged += new Janus.Windows.GridEX.ColumnActionEventHandler( this.versionGrid_CellValueChanged );
+            this.versionGrid.Scroll += new System.Windows.Forms.ScrollEventHandler(this.versionGrid_Scroll);
+            this.versionGrid.Paint += new System.Windows.Forms.PaintEventHandler(this.versionGrid_Paint);
+            this.versionGrid.KeyDown += new System.Windows.Forms.KeyEventHandler(this.versionGrid_KeyDown);
+            this.versionGrid.Resize += new System.EventHandler(this.versionGrid_Resize);
             // 
             // gridContextMenu
             // 
-            this.gridContextMenu.MenuItems.AddRange( new System.Windows.Forms.MenuItem[] {
+            this.gridContextMenu.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
             this.diffContextMenuItem,
             this.viewContextMenuItem,
             this.markContextMenuItem,
-            this.unmarkContextMenuItem} );
-            this.gridContextMenu.Popup += new System.EventHandler( this.gridContextMenu_Popup );
+            this.unmarkContextMenuItem});
+            this.gridContextMenu.Popup += new System.EventHandler(this.gridContextMenu_Popup);
             // 
             // diffContextMenuItem
             // 
@@ -416,56 +420,56 @@ namespace FeatureReviewSupportTool
             // 
             this.markContextMenuItem.Index = 2;
             this.markContextMenuItem.Text = "Mark";
-            this.markContextMenuItem.Click += new System.EventHandler( this.markContextMenuItem_Click );
+            this.markContextMenuItem.Click += new System.EventHandler(this.markContextMenuItem_Click);
             // 
             // unmarkContextMenuItem
             // 
             this.unmarkContextMenuItem.Index = 3;
             this.unmarkContextMenuItem.Text = "Unmark";
             this.unmarkContextMenuItem.Visible = false;
-            this.unmarkContextMenuItem.Click += new System.EventHandler( this.markContextMenuItem_Click );
+            this.unmarkContextMenuItem.Click += new System.EventHandler(this.markContextMenuItem_Click);
             // 
             // comments
             // 
-            this.comments.Anchor = ((System.Windows.Forms.AnchorStyles) ((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.comments.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.comments.CheckAlign = System.Drawing.ContentAlignment.TopLeft;
             this.comments.Checked = true;
             this.comments.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.comments.Location = new System.Drawing.Point( 499, 156 );
+            this.comments.Location = new System.Drawing.Point(499, 156);
             this.comments.Name = "comments";
-            this.comments.Size = new System.Drawing.Size( 104, 32 );
+            this.comments.Size = new System.Drawing.Size(104, 32);
             this.comments.TabIndex = 13;
             this.comments.Text = "&Show Change Comments";
-            this.comments.CheckedChanged += new System.EventHandler( this.SetCommentsRowVisibility );
+            this.comments.CheckedChanged += new System.EventHandler(this.SetCommentsRowVisibility);
             // 
             // showFullRepositoryPath
             // 
-            this.showFullRepositoryPath.Anchor = ((System.Windows.Forms.AnchorStyles) ((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.showFullRepositoryPath.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.showFullRepositoryPath.CheckAlign = System.Drawing.ContentAlignment.TopLeft;
             this.showFullRepositoryPath.Checked = true;
             this.showFullRepositoryPath.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.showFullRepositoryPath.Location = new System.Drawing.Point( 499, 196 );
+            this.showFullRepositoryPath.Location = new System.Drawing.Point(499, 196);
             this.showFullRepositoryPath.Name = "showFullRepositoryPath";
-            this.showFullRepositoryPath.Size = new System.Drawing.Size( 104, 32 );
+            this.showFullRepositoryPath.Size = new System.Drawing.Size(104, 32);
             this.showFullRepositoryPath.TabIndex = 14;
             this.showFullRepositoryPath.Text = "Show Ful&l Repository Path";
-            this.showFullRepositoryPath.CheckedChanged += new System.EventHandler( this.showFullRepositoryPath_CheckedChanged );
+            this.showFullRepositoryPath.CheckedChanged += new System.EventHandler(this.showFullRepositoryPath_CheckedChanged);
             // 
             // viewButton
             // 
-            this.viewButton.Anchor = ((System.Windows.Forms.AnchorStyles) ((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.viewButton.Location = new System.Drawing.Point( 507, 362 );
+            this.viewButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.viewButton.Location = new System.Drawing.Point(507, 362);
             this.viewButton.Name = "viewButton";
-            this.viewButton.Size = new System.Drawing.Size( 96, 32 );
+            this.viewButton.Size = new System.Drawing.Size(96, 32);
             this.viewButton.TabIndex = 19;
             this.viewButton.Text = "&View";
-            this.viewButton.Click += new System.EventHandler( this.viewButton_Click );
+            this.viewButton.Click += new System.EventHandler(this.viewButton_Click);
             // 
             // progressBar1
             // 
-            this.progressBar1.Location = new System.Drawing.Point( 280, 132 );
+            this.progressBar1.Location = new System.Drawing.Point(280, 132);
             this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size( 328, 16 );
+            this.progressBar1.Size = new System.Drawing.Size(328, 16);
             this.progressBar1.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
             this.progressBar1.TabIndex = 20;
             this.progressBar1.Visible = false;
@@ -473,9 +477,9 @@ namespace FeatureReviewSupportTool
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point( 10, 16 );
+            this.label6.Location = new System.Drawing.Point(10, 16);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size( 70, 13 );
+            this.label6.Size = new System.Drawing.Size(70, 13);
             this.label6.TabIndex = 21;
             this.label6.Text = "SCM S&ystem:";
             // 
@@ -483,44 +487,44 @@ namespace FeatureReviewSupportTool
             // 
             this.scmSystem.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.scmSystem.FormattingEnabled = true;
-            this.scmSystem.Location = new System.Drawing.Point( 86, 12 );
+            this.scmSystem.Location = new System.Drawing.Point(86, 12);
             this.scmSystem.Name = "scmSystem";
-            this.scmSystem.Size = new System.Drawing.Size( 178, 21 );
+            this.scmSystem.Size = new System.Drawing.Size(178, 21);
             this.scmSystem.TabIndex = 22;
-            this.scmSystem.SelectedIndexChanged += new System.EventHandler( this.scmSystem_SelectedIndexChanged );
+            this.scmSystem.SelectedIndexChanged += new System.EventHandler(this.scmSystem_SelectedIndexChanged);
             // 
             // viewTraceButton
             // 
-            this.viewTraceButton.Anchor = ((System.Windows.Forms.AnchorStyles) ((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.viewTraceButton.Location = new System.Drawing.Point( 507, 520 );
+            this.viewTraceButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.viewTraceButton.Location = new System.Drawing.Point(507, 520);
             this.viewTraceButton.Name = "viewTraceButton";
-            this.viewTraceButton.Size = new System.Drawing.Size( 96, 32 );
+            this.viewTraceButton.Size = new System.Drawing.Size(96, 32);
             this.viewTraceButton.TabIndex = 23;
             this.viewTraceButton.Text = "View &Trace";
             this.viewTraceButton.UseVisualStyleBackColor = true;
-            this.viewTraceButton.Click += new System.EventHandler( this.viewTraceButton_Click );
+            this.viewTraceButton.Click += new System.EventHandler(this.viewTraceButton_Click);
             // 
             // makeArchiveButton
             // 
-            this.makeArchiveButton.Anchor = ((System.Windows.Forms.AnchorStyles) ((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.makeArchiveButton.Location = new System.Drawing.Point( 507, 400 );
+            this.makeArchiveButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.makeArchiveButton.Location = new System.Drawing.Point(507, 400);
             this.makeArchiveButton.Name = "makeArchiveButton";
-            this.makeArchiveButton.Size = new System.Drawing.Size( 96, 32 );
+            this.makeArchiveButton.Size = new System.Drawing.Size(96, 32);
             this.makeArchiveButton.TabIndex = 24;
             this.makeArchiveButton.Text = "Make &Archive";
             this.makeArchiveButton.UseVisualStyleBackColor = true;
-            this.makeArchiveButton.Click += new System.EventHandler( this.makeArchiveButton_Click );
+            this.makeArchiveButton.Click += new System.EventHandler(this.makeArchiveButton_Click);
             // 
             // setToolsButton
             // 
-            this.setToolsButton.Anchor = ((System.Windows.Forms.AnchorStyles) ((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.setToolsButton.Location = new System.Drawing.Point( 507, 482 );
+            this.setToolsButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.setToolsButton.Location = new System.Drawing.Point(507, 482);
             this.setToolsButton.Name = "setToolsButton";
-            this.setToolsButton.Size = new System.Drawing.Size( 96, 32 );
+            this.setToolsButton.Size = new System.Drawing.Size(96, 32);
             this.setToolsButton.TabIndex = 25;
             this.setToolsButton.Text = "&Set Tools...";
             this.setToolsButton.UseVisualStyleBackColor = true;
-            this.setToolsButton.Click += new System.EventHandler( this.setToolsButton_Click );
+            this.setToolsButton.Click += new System.EventHandler(this.setToolsButton_Click);
             // 
             // makeArchiveFileDialog
             // 
@@ -529,31 +533,31 @@ namespace FeatureReviewSupportTool
             // 
             // FeatureReviewForm
             // 
-            this.AutoScaleBaseSize = new System.Drawing.Size( 5, 13 );
-            this.ClientSize = new System.Drawing.Size( 611, 558 );
-            this.Controls.Add( this.setToolsButton );
-            this.Controls.Add( this.makeArchiveButton );
-            this.Controls.Add( this.viewTraceButton );
-            this.Controls.Add( this.scmSystem );
-            this.Controls.Add( this.label6 );
-            this.Controls.Add( this.progressBar1 );
-            this.Controls.Add( this.viewButton );
-            this.Controls.Add( this.showFullRepositoryPath );
-            this.Controls.Add( this.comments );
-            this.Controls.Add( this.getFeatureHistoryEditBox );
-            this.Controls.Add( this.versionGrid );
-            this.Controls.Add( this.groupBox1 );
-            this.Controls.Add( this.diffButton );
-            this.Controls.Add( this.copyForExcelButton );
-            this.Controls.Add( this.showBlame );
-            this.Controls.Add( this.getFeatureHistoryButton );
-            this.Controls.Add( this.label1 );
+            this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
+            this.ClientSize = new System.Drawing.Size(611, 558);
+            this.Controls.Add(this.setToolsButton);
+            this.Controls.Add(this.makeArchiveButton);
+            this.Controls.Add(this.viewTraceButton);
+            this.Controls.Add(this.scmSystem);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.progressBar1);
+            this.Controls.Add(this.viewButton);
+            this.Controls.Add(this.showFullRepositoryPath);
+            this.Controls.Add(this.comments);
+            this.Controls.Add(this.getFeatureHistoryEditBox);
+            this.Controls.Add(this.versionGrid);
+            this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.diffButton);
+            this.Controls.Add(this.copyForExcelButton);
+            this.Controls.Add(this.showBlame);
+            this.Controls.Add(this.getFeatureHistoryButton);
+            this.Controls.Add(this.label1);
             this.Name = "FeatureReviewForm";
             this.Text = "SEP Feature Review Support Tool";
-            this.Closing += new System.ComponentModel.CancelEventHandler( this.FeatureReviewForm_Closing );
-            ((System.ComponentModel.ISupportInitialize) (this.errorProvider1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize) (this.versionGrid)).EndInit();
-            this.ResumeLayout( false );
+            this.Closing += new System.ComponentModel.CancelEventHandler(this.FeatureReviewForm_Closing);
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.versionGrid)).EndInit();
+            this.ResumeLayout(false);
             this.PerformLayout();
 
         }
@@ -595,41 +599,86 @@ namespace FeatureReviewSupportTool
             currentDataSet.Sort = ChangeHistoryDataSet.RepositoryPath;
 
             versionGrid.DataSource = currentDataSet;
-            versionGrid.RetrieveStructure();
-            foreach( DataColumn column in currentDataSet.Table.Columns )
+            ////versionGrid.RetrieveStructure();
+            ////foreach( DataColumn column in currentDataSet.Table.Columns )
+            ////{
+            ////    column.ReadOnly = true;
+            ////    versionGrid.Tables[0].Columns[column.ColumnName].Caption = column.Caption;
+            ////}
+
+            //// Hide columns that are used for other things.
+            HideColumn(ChangeHistoryDataSet.UniqueId);
+            HideColumn(ChangeHistoryDataSet.RepositoryPath);
+            HideColumn(ChangeHistoryDataSet.VersionNumbers);
+            HideColumn(ChangeHistoryDataSet.Comments);
+
+            foreach (DataColumn column in currentDataSet.Table.Columns)
             {
-                column.ReadOnly = true;
-                versionGrid.Tables[0].Columns[column.ColumnName].Caption = column.Caption;
+                versionGrid.Columns[column.ColumnName].HeaderText = column.Caption;
+                versionGrid.Columns[column.ColumnName].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCellsExceptHeader;
             }
 
-            // Hide columns that are used for other things.
-            HideColumn( ChangeHistoryDataSet.UniqueId );
-            HideColumn( ChangeHistoryDataSet.RepositoryPath );
-            HideColumn( ChangeHistoryDataSet.Comments );
-            HideColumn( ChangeHistoryDataSet.VersionNumbers );
+            versionGrid.Columns[ChangeHistoryDataSet.Marked].HeaderText = "";
 
-            // Set up the comments preview row
-            versionGrid.Tables[0].PreviewRowLines = 20;
-            versionGrid.Tables[0].PreviewRowMember = ChangeHistoryDataSet.Comments;
+            //// Set up the comments preview row
+            //versionGrid.Tables[0].PreviewRowLines = 20;
+            //versionGrid.Tables[0].PreviewRowMember = ChangeHistoryDataSet.Comments;
 
-            currentDataSet.Table.Columns[ChangeHistoryDataSet.Marked].ReadOnly = false;
-            versionGrid.Tables[0].Columns[ChangeHistoryDataSet.Marked].ActAsSelector = true;
-            InitColumnMark( versionGrid.GetRows() );
+            //currentDataSet.Table.Columns[ChangeHistoryDataSet.Marked].ReadOnly = false;
+            //versionGrid.Tables[0].Columns[ChangeHistoryDataSet.Marked].ActAsSelector = true;
+            //InitColumnMark( versionGrid.GetRows() );
 
-            versionGrid.RootTable.Columns[ChangeHistoryDataSet.Marked].AggregateFunction = AggregateFunction.Sum;
-            versionGrid.RootTable.Columns[ChangeHistoryDataSet.DisplayedPath].AggregateFunction = AggregateFunction.Count;
-            versionGrid.TotalRow = InheritableBoolean.True;
+            //versionGrid.RootTable.Columns[ChangeHistoryDataSet.Marked].AggregateFunction = AggregateFunction.Sum;
+            //versionGrid.RootTable.Columns[ChangeHistoryDataSet.DisplayedPath].AggregateFunction = AggregateFunction.Count;
+            //versionGrid.TotalRow = InheritableBoolean.True;
 
-            versionGrid.AutoSizeColumns();
+            //versionGrid.AutoSizeColumns();
 
             // Alter the grid based on the current settings
-            SetCommentsRowVisibility();
+            ShowCommentsRow();
             SetRepositoryPathExpression();
+        }
+
+        void versionGrid_Paint(object sender, PaintEventArgs e)
+        {
+            for (int i = 1; i < versionGrid.Rows.Count; i += 2)
+            {
+                int commentPos = currentDataSet.Table.Columns.IndexOf(ChangeHistoryDataSet.DisplayedPath);
+                Rectangle t1 = versionGrid.GetCellDisplayRectangle(commentPos, i, true);
+                int totalWidth = 0;
+                int visibleColumns = 0;
+                for (int j = 0; j < versionGrid.Columns.Count; j++)
+                {
+                    if (versionGrid.Columns[j].Visible)
+                    {
+                        totalWidth += versionGrid.GetCellDisplayRectangle(j, i, true).Width;
+                        visibleColumns++;
+                    }
+                }
+
+                t1.Width = totalWidth - 2;
+                string content = versionGrid.Rows[i].Cells[ChangeHistoryDataSet.Comments].Value.ToString();
+                t1.Height = (int)e.Graphics.MeasureString(content, versionGrid.Font).Height;
+                versionGrid.Rows[i].Height = t1.Height + 1;
+                t1.X += 1;
+                e.Graphics.FillRectangle(Brushes.White, t1);
+                e.Graphics.DrawString(content, versionGrid.Font, Brushes.Black, t1);
+            }
+        }
+
+        void versionGrid_Scroll(object sender, ScrollEventArgs e)
+        {
+            versionGrid.Refresh();
+        }
+
+        void versionGrid_Resize(object sender, EventArgs e)
+        {
+            versionGrid.Refresh();
         }
 
         private void HideColumn( string columnName )
         {
-            versionGrid.Tables[0].Columns[columnName].Visible = false;
+            versionGrid.Columns[columnName].Visible = false;
         }
 
         private void copyForExcelButton_Click(object sender, System.EventArgs e)
@@ -747,7 +796,7 @@ namespace FeatureReviewSupportTool
             unmarkContextMenuItem.Enabled = isARowSelected;
             if( isARowSelected )
             {
-                unmarkContextMenuItem.Visible = CurrentRow.RowStyle != null;
+                //unmarkContextMenuItem.Visible = CurrentRow.RowStyle != null;
                 markContextMenuItem.Visible = ! unmarkContextMenuItem.Visible;
             }
         }
@@ -757,85 +806,30 @@ namespace FeatureReviewSupportTool
             if( CurrentRow == null )
                 return;
 
-            CurrentRow.IsChecked = ! CurrentRow.IsChecked;
-            SetRowStyle( CurrentRow );
-            SyncColumnMark( CurrentRow );
+            //CurrentRow.IsChecked = ! CurrentRow.IsChecked;
         }
 
-        private void SetRowStyle( GridEXRow row )
-        {
-            // so far, there's just one FormatStyles entry, so we just grab it
-            // using a magic number.
-            row.RowStyle = row.IsChecked ? versionGrid.FormatStyles[0] : null;
-        }
-
-        // This method exists because ActAsSelector columns cannot be bound
-        // to columns in the data source. (http://www.janusys.com/JanusForums/ForumMessage.aspx?message=33397&preview=2)
-        private void SyncColumnMark( GridEXRow row )
-        {
-            ((DataRowView)row.DataRow).Row[ ChangeHistoryDataSet.Marked ] = row.IsChecked;
-        }
-
-        private void InitColumnMark( GridEXRow [] rows )
-        {
-            foreach( GridEXRow row in rows )
-            {
-                InitColumnMark( row );
-            }
-        }
-
-        private void InitColumnMark( GridEXRow row )
-        {
-            object isChecked = ((DataRowView)row.DataRow).Row[ ChangeHistoryDataSet.Marked ];
-            if( ! Convert.IsDBNull( isChecked ) )
-            {
-                row.IsChecked = Convert.ToBoolean( isChecked );
-            }
-        }
 
         private void markContextMenuItem_Click(object sender, System.EventArgs e)
         {
             ToggleMark( );
         }
 
-        private void versionGrid_FormattingRow(object sender, Janus.Windows.GridEX.RowLoadEventArgs e)
-        {
-            // The grid forgets the rowstyle when it goes off-screen, so reset
-            // it when it becomes relevant again.
-            SetRowStyle( e.Row );
-        }
-
-        private void versionGrid_CellValueChanged(object sender, Janus.Windows.GridEX.ColumnActionEventArgs e)
-        {
-            // TODO - figure out how to make the formatting take effect immediately.
-            SetRowStyle( CurrentRow );
-            SyncColumnMark( CurrentRow );
-        }
-
-        private void versionGrid_ColumnHeaderClick(object sender, Janus.Windows.GridEX.ColumnActionEventArgs e)
-        {
-            foreach( GridEXRow row in versionGrid.GetRows( ) )
-            {
-                SetRowStyle( row );
-                SyncColumnMark( row );
-            }
-        }
-
         private void gridContextMenu_Popup(object sender, EventArgs e)
         {
-            if( versionGrid.SelectedItems[0].RowType == RowType.Record )
-            {
+            //if( versionGrid.SelectedRows[0].RowType == RowType.Record )
+            //{
                 PrepareDiffMenu( );
                 PrepareViewMenu( );
                 PrepareMarkMenuItems( );
-            }
-            else
-            {
-                foreach( MenuItem m in gridContextMenu.MenuItems )
-                {
-                    m.Enabled = false;
-                }
-            }
+            //}
+            //else
+            //{
+            //    foreach( MenuItem m in gridContextMenu.MenuItems )
+            //    {
+            //        m.Enabled = false;
+            //    }
+            //}
         }
 
         #region VersionDiffer helper class
@@ -985,7 +979,7 @@ namespace FeatureReviewSupportTool
 
         private object GetSelectedCell( string column )
         {
-            return CurrentRow.Cells[ column ].Value;
+            return CurrentRow[ column ];
         }
 
         private string GetSelectedString( string column )
@@ -1016,7 +1010,7 @@ namespace FeatureReviewSupportTool
 
         private void SetCommentsRowVisibility( object sender, System.EventArgs e )
         {
-            SetCommentsRowVisibility( );
+            ShowCommentsRow( );
         }
 
         private void showFullRepositoryPath_CheckedChanged(object sender, System.EventArgs e)
@@ -1048,12 +1042,24 @@ namespace FeatureReviewSupportTool
             textBox.SelectAll( );
         }
 
-        private void SetCommentsRowVisibility( )
+        private void ShowCommentsRow( )
         {
-            if( versionGrid.Tables.Count > 0 )
+            List<DataRow> rowsToAdd = new List<DataRow>();
+            foreach (DataRow row in currentDataSet.Table.Rows)
             {
-                versionGrid.Tables[0].PreviewRow = comments.Checked;
+                DataRow newRow = currentDataSet.Table.NewRow();
+                newRow[ChangeHistoryDataSet.UniqueId] = row[ChangeHistoryDataSet.UniqueId].ToString() + "comments";
+                newRow[ChangeHistoryDataSet.RepositoryPath] = row[ChangeHistoryDataSet.RepositoryPath].ToString() + ".";
+                newRow[ChangeHistoryDataSet.Comments] = row[ChangeHistoryDataSet.Comments];
+                rowsToAdd.Add(newRow);
             }
+            int i = 1;
+            foreach (DataRow row in rowsToAdd)
+            {
+                currentDataSet.Table.Rows.InsertAt(row, i);
+                i += 2;
+            }
+            
         }
 
         private void SetRepositoryPathExpression( )
@@ -1100,9 +1106,9 @@ namespace FeatureReviewSupportTool
             switch( e.KeyData )
             {
                 case Keys.Control | Keys.C:
-                    if( versionGrid.SelectedItems.Count == 1 )
+                    if( versionGrid.SelectedRows.Count == 1 )
                     {
-                        Clipboard.SetDataObject( versionGrid.SelectedItems[0].GetRow( ).Cells[ ChangeHistoryDataSet.DisplayedPath ].Value, true );
+                        Clipboard.SetDataObject(versionGrid.SelectedRows[0].Cells[ChangeHistoryDataSet.DisplayedPath].Value, true);
                     }
                     break;
 
@@ -1123,14 +1129,21 @@ namespace FeatureReviewSupportTool
                 case Keys.N:
                 case Keys.F:
                 case Keys.H:
-                    versionGrid.MoveNext();
+                    if(versionGrid.RowCount > versionGrid.SelectedRows[0].Index + 1){
+                        versionGrid.Rows[versionGrid.SelectedRows[0].Index + 1].Selected = true;
+                        versionGrid.SelectedRows[0].Selected = false;
+                    }
                     break;
 
                 case Keys.K:
                 case Keys.P:
                 case Keys.B:
                 case Keys.L:
-                    versionGrid.MovePrevious();
+                    if (versionGrid.SelectedRows[0].Index - 1 > 0)
+                    {
+                        versionGrid.SelectedRows[0].Selected = false;
+                        versionGrid.Rows[versionGrid.SelectedRows[0].Index - 1].Selected = true; 
+                    }
                     break;
 
                 default:
